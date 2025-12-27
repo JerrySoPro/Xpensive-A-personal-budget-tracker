@@ -5,16 +5,23 @@ import '../models/account.dart';
 import '../models/category.dart';
 import '../models/transaction.dart';
 import '../services/firebase_service.dart';
+import '../providers/theme_provider.dart';
 import 'login_screen.dart';
 import 'add_transaction_screen.dart';
 import 'accounts_screen.dart';
 import 'categories_screen.dart';
 import 'statistics_screen.dart';
+import 'profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final User user;
+  final ThemeProvider themeProvider;
 
-  const HomeScreen({super.key, required this.user});
+  const HomeScreen({
+    super.key,
+    required this.user,
+    required this.themeProvider,
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -68,7 +75,10 @@ class _HomeScreenState extends State<HomeScreen> {
     await _firebase.logout();
     if (mounted) {
       Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => const LoginScreen()),
+        MaterialPageRoute(
+          builder: (context) =>
+              LoginScreen(themeProvider: widget.themeProvider),
+        ),
         (route) => false,
       );
     }
@@ -553,17 +563,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = widget.themeProvider.isDarkMode;
+
     final screens = [
       _buildDashboard(),
       _buildTransactionsList(),
       AccountsScreen(user: widget.user, onDataChanged: _loadData),
       StatisticsScreen(user: widget.user),
+      ProfileScreen(user: widget.user, themeProvider: widget.themeProvider),
     ];
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Xpensive'),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: isDark
+            ? Colors.deepPurple.shade800
+            : Colors.deepPurple,
         foregroundColor: Colors.white,
         elevation: 0,
         actions: [
@@ -581,9 +596,11 @@ class _HomeScreenState extends State<HomeScreen> {
             tooltip: 'Categories',
           ),
           IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: _logout,
-            tooltip: 'Logout',
+            icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
+            onPressed: () {
+              widget.themeProvider.toggleTheme();
+            },
+            tooltip: isDark ? 'Light Mode' : 'Dark Mode',
           ),
         ],
       ),
@@ -592,7 +609,9 @@ class _HomeScreenState extends State<HomeScreen> {
           : screens[_currentIndex],
       floatingActionButton: FloatingActionButton(
         onPressed: _navigateToAddTransaction,
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: isDark
+            ? Colors.deepPurple.shade400
+            : Colors.deepPurple,
         child: const Icon(Icons.add, color: Colors.white),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -605,31 +624,43 @@ class _HomeScreenState extends State<HomeScreen> {
             IconButton(
               icon: Icon(
                 Icons.home,
-                color: _currentIndex == 0 ? Colors.deepPurple : Colors.grey,
+                color: _currentIndex == 0
+                    ? (isDark ? Colors.deepPurpleAccent : Colors.deepPurple)
+                    : Colors.grey,
               ),
               onPressed: () => setState(() => _currentIndex = 0),
+              tooltip: 'Home',
             ),
             IconButton(
               icon: Icon(
                 Icons.list,
-                color: _currentIndex == 1 ? Colors.deepPurple : Colors.grey,
+                color: _currentIndex == 1
+                    ? (isDark ? Colors.deepPurpleAccent : Colors.deepPurple)
+                    : Colors.grey,
               ),
               onPressed: () => setState(() => _currentIndex = 1),
+              tooltip: 'Transactions',
             ),
             const SizedBox(width: 48), // Space for FAB
             IconButton(
               icon: Icon(
                 Icons.account_balance_wallet,
-                color: _currentIndex == 2 ? Colors.deepPurple : Colors.grey,
+                color: _currentIndex == 2
+                    ? (isDark ? Colors.deepPurpleAccent : Colors.deepPurple)
+                    : Colors.grey,
               ),
               onPressed: () => setState(() => _currentIndex = 2),
+              tooltip: 'Accounts',
             ),
             IconButton(
               icon: Icon(
-                Icons.pie_chart,
-                color: _currentIndex == 3 ? Colors.deepPurple : Colors.grey,
+                Icons.person,
+                color: _currentIndex == 4
+                    ? (isDark ? Colors.deepPurpleAccent : Colors.deepPurple)
+                    : Colors.grey,
               ),
-              onPressed: () => setState(() => _currentIndex = 3),
+              onPressed: () => setState(() => _currentIndex = 4),
+              tooltip: 'Profile',
             ),
           ],
         ),

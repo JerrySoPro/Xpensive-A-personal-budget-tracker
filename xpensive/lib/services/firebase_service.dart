@@ -162,6 +162,25 @@ class FirebaseService {
     return User.fromMap(userDoc.data() as Map<String, dynamic>);
   }
 
+  Future<void> updateUserProfile(
+    String userId, {
+    String? displayName,
+    String? profilePhoto,
+  }) async {
+    final Map<String, dynamic> updates = {};
+
+    if (displayName != null) {
+      updates['displayName'] = displayName;
+    }
+    if (profilePhoto != null) {
+      updates['profilePhoto'] = profilePhoto;
+    }
+
+    if (updates.isNotEmpty) {
+      await _usersCollection.doc(userId).update(updates);
+    }
+  }
+
   // ==================== ACCOUNTS ====================
 
   Future<void> createAccount(Account account) async {

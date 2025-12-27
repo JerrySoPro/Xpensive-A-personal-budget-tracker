@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import '../services/firebase_service.dart';
+import '../providers/theme_provider.dart';
 import 'home_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+  final ThemeProvider themeProvider;
+
+  const RegisterScreen({super.key, required this.themeProvider});
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -49,7 +52,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       if (mounted) {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-            builder: (context) => HomeScreen(user: result['user']),
+            builder: (context) => HomeScreen(
+              user: result['user'],
+              themeProvider: widget.themeProvider,
+            ),
           ),
           (route) => false,
         );

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import '../services/firebase_service.dart';
+import '../providers/theme_provider.dart';
 import 'register_screen.dart';
 import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  final ThemeProvider themeProvider;
+
+  const LoginScreen({super.key, required this.themeProvider});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -41,7 +44,10 @@ class _LoginScreenState extends State<LoginScreen> {
       if (mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => HomeScreen(user: result['user']),
+            builder: (context) => HomeScreen(
+              user: result['user'],
+              themeProvider: widget.themeProvider,
+            ),
           ),
         );
       }
@@ -189,8 +195,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               onPressed: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        const RegisterScreen(),
+                                    builder: (context) => RegisterScreen(
+                                      themeProvider: widget.themeProvider,
+                                    ),
                                   ),
                                 );
                               },
