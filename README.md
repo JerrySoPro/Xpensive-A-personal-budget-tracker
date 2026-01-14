@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="screenshots/logo.png" alt="Xpensive Logo" width="120">
+
 # Xpensive
 
 ### Personal Expense Tracker
