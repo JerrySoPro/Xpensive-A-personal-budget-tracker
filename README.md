@@ -203,36 +203,59 @@ flutter run -d ios
 ```
 
 </details>
+
+---
+
+## Screenshots
+
+<div align="center">
+
+|              Login              |                Dashboard                |             Add Transaction             |
+| :-----------------------------: | :-------------------------------------: | :-------------------------------------: |
+| ![Login](screenshots/login.png) | ![Dashboard](screenshots/dashboard.png) | ![Add](screenshots/add_transaction.png) |
+
+|               Accounts                |                Categories                 |              Statistics              |
+| :-----------------------------------: | :---------------------------------------: | :----------------------------------: |
+| ![Accounts](screenshots/accounts.png) | ![Categories](screenshots/categories.png) | ![Stats](screenshots/statistics.png) |
+
+|               Profile               |             Dark Mode              |
+| :---------------------------------: | :--------------------------------: |
+| ![History](screenshots/history.png) | ![Dark](screenshots/dark_mode.png) |
+
+</div>
+
+---
+
 ## Project Structure
 
+```
 lib/
 │
-├── main.dart # Application entry point
-├── firebase_options.dart # Firebase configuration
+├── main.dart                    # Application entry point
+├── firebase_options.dart        # Firebase configuration
 │
-├── models/ # Data models
-│ ├── user.dart # User model
-│ ├── account.dart # Account model
-│ ├── category.dart # Category model
-│ └── transaction.dart # Transaction model
+├── models/                      # Data models
+│   ├── user.dart                # User model
+│   ├── account.dart             # Account model
+│   ├── category.dart            # Category model
+│   └── transaction.dart         # Transaction model
 │
-├── services/ # Business logic
-│ └── firebase_service.dart # Firebase operations
+├── services/                    # Business logic
+│   └── firebase_service.dart    # Firebase operations
 │
-├── providers/ # State management
-│ └── theme_provider.dart # Theme management
+├── providers/                   # State management
+│   └── theme_provider.dart      # Theme management
 │
-└── screens/ # UI screens
-├── splash_screen.dart # Splash/loading screen
-├── login_screen.dart # Login page
-├── register_screen.dart # Registration page
-├── home_screen.dart # Main dashboard
-├── profile_screen.dart # User profile
-├── accounts_screen.dart # Account management
-├── categories_screen.dart # Category management
-├── add_transaction_screen.dart # Add transaction
-└── statistics_screen.dart # Reports & charts
-
+└── screens/                     # UI screens
+    ├── splash_screen.dart          # Splash/loading screen
+    ├── login_screen.dart           # Login page
+    ├── register_screen.dart        # Registration page
+    ├── home_screen.dart            # Main dashboard
+    ├── profile_screen.dart         # User profile
+    ├── accounts_screen.dart        # Account management
+    ├── categories_screen.dart      # Category management
+    ├── add_transaction_screen.dart # Add transaction
+    └── statistics_screen.dart      # Reports & charts
 ```
 
 ---
@@ -242,32 +265,30 @@ lib/
 ### Entity Relationship
 
 ```
-
-┌──────────────┐ ┌──────────────┐ ┌──────────────┐
-│ Users │ │ Accounts │ │ Categories │
-├──────────────┤ ├──────────────┤ ├──────────────┤
-│ id (PK) │──┐ │ id (PK) │ │ id (PK) │
-│ username │ │ │ userId (FK) │──┐ │ userId (FK) │──┐
-│ email │ │ │ name │ │ │ name │ │
-│ displayName │ │ │ type │ │ │ type │ │
-│ profilePhoto │ │ │ balance │ │ │ icon │ │
-│ createdAt │ │ │ currency │ │ │ color │ │
-│ lastLogin │ │ └──────────────┘ │ └──────────────┘ │
-└──────────────┘ │ │ │
-│ ┌──────────────┐ │ │
-│ │ Transactions │ │ │
-│ ├──────────────┤ │ │
-└───▶│ id (PK) │ │ │
-│ userId (FK) │◀─┘ │
-│ accountId(FK)│ │
-│ categoryId(FK)│◀───────────────────────┘
-│ type │
-│ amount │
-│ date │
-│ note │
-└──────────────┘
-
-````
+┌──────────────┐       ┌──────────────┐       ┌──────────────┐
+│    Users     │       │   Accounts   │       │  Categories  │
+├──────────────┤       ├──────────────┤       ├──────────────┤
+│ id (PK)      │──┐    │ id (PK)      │       │ id (PK)      │
+│ username     │  │    │ userId (FK)  │──┐    │ userId (FK)  │──┐
+│ email        │  │    │ name         │  │    │ name         │  │
+│ displayName  │  │    │ type         │  │    │ type         │  │
+│ profilePhoto │  │    │ balance      │  │    │ icon         │  │
+│ createdAt    │  │    │ currency     │  │    │ color        │  │
+│ lastLogin    │  │    └──────────────┘  │    └──────────────┘  │
+└──────────────┘  │                      │                      │
+                  │    ┌──────────────┐  │                      │
+                  │    │ Transactions │  │                      │
+                  │    ├──────────────┤  │                      │
+                  └───▶│ id (PK)      │  │                      │
+                       │ userId (FK)  │◀─┘                      │
+                       │ accountId(FK)│                         │
+                       │ categoryId(FK)│◀───────────────────────┘
+                       │ type         │
+                       │ amount       │
+                       │ date         │
+                       │ note         │
+                       └──────────────┘
+```
 
 <details>
 <summary><b>Collection Details</b></summary>
@@ -331,6 +352,8 @@ Contributions are what make the open-source community amazing! Any contributions
 2. **Create** your feature branch
    ```bash
    git checkout -b feature/AmazingFeature
+   ```
+
 ````
 
 3. **Commit** your changes
@@ -384,3 +407,4 @@ Special thanks to these amazing projects:
 Made with Flutter
 
 </div>
+````
